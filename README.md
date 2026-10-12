@@ -82,7 +82,7 @@ Explained in the sister series: [The lens as a Fourier transformer](https://bren
 
 ## Where this fits
 
-Part of the [Hardware index](https://github.com/BrendanJamesLynskey/Hardware), under *Optical Technology*. **Sister series:** [Optical Technology for Data Centres](https://github.com/BrendanJamesLynskey/Optical_Hub_Data_Centres) (planned), [Optical Technology for AI Processing](https://github.com/BrendanJamesLynskey/Optical_Hub_AI_Processing) (planned), [Fourier Optics for Inference](https://github.com/BrendanJamesLynskey/LLM_Hub_Fourier_Optics_Inference), [Fourier Optics for Training](https://github.com/BrendanJamesLynskey/LLM_Hub_Fourier_Optics_Training) and [Compute in Transit](https://github.com/BrendanJamesLynskey/LLM_Hub_Compute_in_Transit).
+Part of the [Hardware index](https://github.com/BrendanJamesLynskey/Hardware), under *Optical Technology*. **Sister series:** [Optical Technology for Data Centres](https://github.com/BrendanJamesLynskey/Optical_Hub_Data_Centres), [Optical Technology for AI Processing](https://github.com/BrendanJamesLynskey/Optical_Hub_AI_Processing) (planned), [Fourier Optics for Inference](https://github.com/BrendanJamesLynskey/LLM_Hub_Fourier_Optics_Inference), [Fourier Optics for Training](https://github.com/BrendanJamesLynskey/LLM_Hub_Fourier_Optics_Training) and [Compute in Transit](https://github.com/BrendanJamesLynskey/LLM_Hub_Compute_in_Transit).
 
 ## Licence
 
