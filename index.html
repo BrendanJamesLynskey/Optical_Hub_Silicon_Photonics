@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Silicon Photonics Fundamentals &mdash; Optical Technology</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;500;600;700&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Geist+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-primary: #1c1815; --bg-card: #231e1a; --bg-code: #2b2520;
+            --text-primary: #efe8dc; --text-secondary: #a2978b;
+            --accent: #aabd59; --accent-dim: #aabd5944; --accent-glow: #aabd5933;
+            --border: #3a322b;
+            --font-display: 'Bricolage Grotesque', sans-serif;
+            --font-mono: 'Geist Mono', 'Geist Mono', monospace;
+            --font-body: 'Instrument Sans', sans-serif;
+            --max-width: 960px;
+        }
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg-primary); color: var(--text-primary);
+               font-family: var(--font-body); font-size: 17px; line-height: 1.7;
+               overflow-x: hidden; }
+        .hero { min-height: 60vh; display: flex; flex-direction: column;
+                justify-content: center; align-items: center;
+                padding: 4rem 1.5rem 3rem; text-align: center; position: relative; }
+        .hero::before { content: ''; position: absolute; top: 0; left: 50%;
+                        transform: translateX(-50%); width: 600px; height: 600px;
+                        background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+                        pointer-events: none; z-index: 0; }
+        .hero > * { position: relative; z-index: 1; }
+        .series-label { font-family: var(--font-mono); font-size: 0.85rem;
+                        color: var(--accent); letter-spacing: 0.15em;
+                        text-transform: uppercase; margin-bottom: 1rem; }
+        .hero h1 { font-family: var(--font-display);
+                   font-size: clamp(2rem, 5vw, 3rem); font-weight: 700;
+                   color: var(--text-primary); line-height: 1.2; margin-bottom: 1rem; }
+        .hero h1 .accent { color: var(--accent); }
+        .hero .subtitle { font-size: 1.1rem; color: var(--text-secondary);
+                          max-width: 720px; margin-bottom: 1.5rem; }
+        .tags { display: flex; flex-wrap: wrap; gap: 0.5rem;
+                justify-content: center; margin-bottom: 1rem; }
+        .tag { font-family: var(--font-mono); font-size: 0.75rem;
+               padding: 0.25rem 0.75rem; border-radius: 999px;
+               border: 1px solid var(--accent); color: var(--accent);
+               background: var(--accent-dim); white-space: nowrap; }
+        .container { max-width: var(--max-width); margin: 0 auto; padding: 2rem 1.5rem; }
+        h2 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 700;
+             color: var(--accent); margin: 1rem 0 1.25rem; }
+        .deck-list { display: flex; flex-direction: column; gap: 0.6rem;
+                     list-style: none; padding: 0; counter-reset: deck; }
+        .deck-card { display: flex; gap: 1rem; padding: 1rem 1.25rem;
+                     background: var(--bg-card); border: 1px solid var(--border);
+                     border-left: 3px solid var(--accent); border-radius: 6px;
+                     transition: border-color 0.15s; counter-increment: deck; }
+        .deck-card:hover { border-color: var(--accent); }
+        .deck-card.roadmap { border-left-color: #e3b174; }
+        .deck-card.roadmap:hover { border-color: #e3b174; }
+        .deck-card .num { font-family: var(--font-mono); font-size: 0.8rem;
+                          color: var(--accent); min-width: 2rem;
+                          padding-top: 0.15rem; }
+        .deck-card.roadmap .num { color: #e3b174; }
+        .deck-card .num::before { content: counter(deck, decimal-leading-zero); }
+        .deck-card .body { flex: 1; min-width: 0; }
+        .deck-card .deck-title { font-family: var(--font-display); font-size: 1.05rem;
+                                 font-weight: 600; color: var(--text-primary);
+                                 margin-bottom: 0.2rem; }
+        .deck-card a.deck-title { text-decoration: none; }
+        .deck-card a.deck-title:hover { color: var(--accent); }
+        .deck-card .desc { font-size: 0.92rem; color: var(--text-secondary); }
+        .deck-card .meta { font-family: var(--font-mono); font-size: 0.7rem;
+                           color: var(--text-secondary); margin-top: 0.4rem;
+                           display: flex; gap: 0.6rem; flex-wrap: wrap; }
+        .badge { display: inline-block; font-family: var(--font-mono);
+                 font-size: 0.65rem; padding: 0.1rem 0.5rem; border-radius: 999px;
+                 border: 1px solid var(--border); color: var(--text-secondary); }
+        .badge.live { border-color: var(--accent); color: var(--accent);
+                      background: var(--accent-dim); }
+        .badge.roadmap { border-color: #e3b174; color: #e3b174;
+                         background: rgba(227,177,116,0.08); }
+        .callout { background: var(--bg-card); border-left: 3px solid var(--accent);
+                   border-radius: 0 8px 8px 0; padding: 1rem 1.25rem; margin: 1.5rem 0; }
+        .callout p { margin-bottom: 0; color: var(--text-secondary); }
+        .callout p strong { color: var(--text-primary); }
+        .footer { text-align: center; padding: 3rem 1.5rem;
+                  color: var(--text-secondary); font-size: 0.85rem;
+                  border-top: 1px solid var(--border); max-width: var(--max-width);
+                  margin: 3rem auto 0; }
+        .footer a { color: var(--accent); text-decoration: none; }
+        .footer a:hover { text-decoration: underline; }
+        @media (max-width: 640px) {
+            .hero h1 { font-size: 1.8rem; }
+            .deck-card { flex-direction: column; gap: 0.3rem; }
+        }
+            .deck-card.code { border-left-color: #97cdc6; }
+        .deck-card.code .num { color: #97cdc6; }
+        .deck-card.code .num::before { content: none; }
+        .badge.code { border-color: #97cdc6; color: #97cdc6; background: rgba(151,205,198,0.08); }
+    </style>
+
+<style>:root{font-synthesis-weight:none}        .deck-card.code { border-left-color: #97cdc6; }
+        .deck-card.code .num { color: #97cdc6; }
+        .deck-card.code .num::before { content: none; }
+        .badge.code { border-color: #97cdc6; color: #97cdc6; background: rgba(151,205,198,0.08); }
+        h3 { font-family: var(--font-display); font-size: 1.1rem; color: var(--accent); margin: 1.6rem 0 0.6rem; }
+        .gloss-intro { color: var(--text-secondary); margin-bottom: 0.5rem; }
+        dl.gloss dt { font-weight: 700; margin-top: 0.9rem; scroll-margin-top: 1rem; }
+        dl.gloss dt:target { color: var(--accent); }
+        dl.gloss dd { margin: 0.2rem 0 0 0; font-size: 0.92rem; color: var(--text-secondary); }
+        dl.gloss dd .where { display: block; margin-top: 0.25rem; font-size: 0.85rem; }
+        dl.gloss a, .gloss-intro a { color: var(--accent); }
+        .hero { overflow: hidden; }   /* the 600px glow must not widen the page on phones */
+    </style>
+</head>
+<body>
+<header class="hero">
+    <div class="series-label">Optical Technology &mdash; Silicon Photonics Fundamentals</div>
+    <h1>Silicon Photonics <span class="accent">Fundamentals</span></h1>
+    <p class="subtitle">The device physics under every optical link and photonic accelerator: how silicon guides, splits and filters light, how modulators and germanium photodiodes put data on it and take it off, and where the laser, the package and the picojoules per bit come from. A foundation series: the data-centre and AI-processing series link this glossary instead of re-explaining devices.</p>
+    <div class="tags"><span class="tag">SOI waveguides</span><span class="tag">Rings and MZIs</span><span class="tag">WDM</span><span class="tag">Modulators</span><span class="tag">Ge photodiodes</span><span class="tag">pJ/bit</span><span class="tag">3 decks live</span></div>
+</header>
+<main class="container">
+    <h2>Presentations in This Series</h2>
+    <ol class="deck-list">
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/">Waveguides, Couplers and WDM &rarr;</a><div class="desc">How a silicon wire guides light, and what the 220-nanometre platform makes cheap and what it makes hard: guided modes and group index, loss and bends, getting light on and off the chip, splitters and couplers, interferometers and rings, temperature and fabrication sensitivity, and the wavelength grids and multiplexers that put many channels on one fibre.</div><div class="meta"><span class="badge live">live</span><span>SOI &middot; Guided modes &middot; Group index &middot; Grating couplers</span></div></div></li>
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/">Modulators and Detectors &rarr;</a><div class="desc">Putting data on light and taking it off again: the plasma-dispersion effect, depletion, injection and MOS phase shifters, Mach&ndash;Zehnder and ring modulators, travelling-wave electrodes and drive energy, keeping rings on resonance, GeSi and lithium-niobate alternatives, germanium photodiodes and APDs, and the receiver that turns photocurrent into bits.</div><div class="meta"><span class="badge live">live</span><span>Plasma dispersion &middot; MZM &middot; Ring modulator &middot; V&pi;L</span></div></div></li>
+<li class="deck-card"><div class="num"></div><div class="body"><a class="deck-title" href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/">Lasers, Packaging and the Energy-per-Bit Budget &rarr;</a><div class="desc">Why silicon borrows its laser and the four ways to bring one; external laser modules, wall-plug efficiency and comb sources; fibre attach and packaging; putting electronics next to photonics; and the link budget from laser to detector, priced in picojoules per bit, with what published links actually report.</div><div class="meta"><span class="badge live">live</span><span>Laser integration &middot; ELSFP &middot; Wall-plug efficiency &middot; Packaging</span></div></div></li>
+    </ol>
+    <div class="callout">
+        <p><strong>How to read this series.</strong> Deck 01 is the passive chip: waveguides, couplers, interferometers, rings and WDM, with a mode solver running in the browser. Deck 02 is the active devices: how silicon modulates light without a linear electro-optic effect, and how germanium detects it. Deck 03 is the system around them: the laser silicon cannot make, the package, and the link budget priced in energy per bit, with an interactive budget.</p>
+    </div>
+    <div class="callout">
+        <p><strong>Where the numbers come from.</strong> This is mostly a literature series. Every number is cited on its slide to a paper, a standard (ITU-T, IEEE 802.3, OIF) or a datasheet, with a link, or computed live by a deck's interactive from stated inputs. Vendor claims are labelled as the vendor's own, and illustrative coefficients (in the deck 02 and 03 interactives) are labelled as illustrative. Research records are not product specifications; the slides say which is which.</p>
+    </div>
+    <div class="callout">
+        <p><strong>Where it meets the other optical series.</strong> The <a style="color: var(--accent);" href="https://github.com/BrendanJamesLynskey/Optical_Hub_Data_Centres">data-centre</a> series (pluggables and linear-drive optics, co-packaged optics, optical circuit switching, AI cluster networks) and the <a style="color: var(--accent);" href="https://github.com/BrendanJamesLynskey/Optical_Hub_AI_Processing">AI-processing</a> series build on these devices and link this glossary. The Fourier Optics series use the same physics for computing rather than communicating: MZI meshes and on-chip Fourier optics (<a style="color: var(--accent);" href="https://brendanjameslynskey.github.io/FOptInf_01_Fourier_Optics_for_Engineers/#slide-08">FOptInf 01</a>), square-law detection (<a style="color: var(--accent);" href="https://brendanjameslynskey.github.io/FOptInf_01_Fourier_Optics_for_Engineers/#slide-07">FOptInf 01</a>), and a photonic link module that computes in transit (<a style="color: var(--accent);" href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/">Compute in Transit</a>).</p>
+    </div>
+
+    <h2 id="glossary">Glossary: Concepts and Where They Are Explained</h2>
+    <p class="gloss-intro">Every concept the decks rely on, with a short explanation and links to the slides that explain it. The other optical series link these entries by their anchors. Concepts the sister series already explain are linked, not repeated: <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#glossary">Fourier Optics for Inference</a> (the lens as a Fourier transformer, MZI meshes, the phase problem), <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#glossary">Compute in Transit</a> (the photonic link module, link energy per bit), <a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#glossary">LLM Inference Simulators</a> (power) and <a href="https://brendanjameslynskey.github.io/FHE_Hub_Accelerator_Simulators/#glossary">FHE Accelerator Simulators</a> (converter energy).</p>
+    <h3>Platform and waveguides</h3>
+    <dl class="gloss">
+        <dt id="g-sip">Silicon photonics</dt>
+        <dd>Optical circuits made with CMOS wafers, lithography and etch: silicon waveguides (transparent at 1310 and 1550 nm), germanium detectors, modulators and heaters on one chip. Silicon does not emit light efficiently, so the laser usually comes from another material.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-01">OptSiP 01 &middot; why silicon photonics</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-01">OptSiP 03 &middot; why silicon needs someone else's laser</a></span></dd>
+        <dt id="g-soi">Silicon-on-insulator (SOI) platform</dt>
+        <dd>The common platform: a 220 nm silicon layer on 2 &micro;m of buried oxide. Silicon's index is about 3.48 at 1550 nm against oxide's 1.44, a contrast of about 2 that allows sub-micron waveguides and micrometre bends.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-02">OptSiP 01 &middot; the SOI platform and its index contrast</a></span></dd>
+        <dt id="g-mode">Guided mode and effective index</dt>
+        <dd>A field pattern that propagates along a waveguide unchanged, as exp(i&beta;z). The effective index n<sub>eff</sub> = &beta;/k<sub>0</sub> lies between the cladding and core indices; about 2.5 for a 500 &times; 220 nm silicon strip at 1550 nm.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-03">OptSiP 01 &middot; guided modes</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-04">OptSiP 01 &middot; interactive mode solver</a></span></dd>
+        <dt id="g-strip">Strip and rib waveguides</dt>
+        <dd>A strip (wire) is etched through the silicon: tightest bends, but its field touches the rough sidewalls. A rib is partly etched and leaves a slab: lower loss and room for electrical contacts, at the cost of larger bends.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-03">OptSiP 01 &middot; strip and rib waveguides</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-05">OptSiP 01 &middot; loss, bends and group index</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-03">OptSiP 02 &middot; phase-shifter cross-sections</a></span></dd>
+        <dt id="g-singlemode">Single-mode condition</dt>
+        <dd>The width and height below which a waveguide guides only its fundamental mode. Higher-order modes couple at bends and junctions, so routing guides are kept single-mode; for a 220 nm oxide-clad strip at 1550 nm the solver puts the TE cut-off near 0.5 &micro;m width.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-03">OptSiP 01 &middot; guided modes</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-04">OptSiP 01 &middot; interactive mode solver</a></span></dd>
+        <dt id="g-ng">Group index</dt>
+        <dd>n<sub>g</sub> = n<sub>eff</sub> &minus; &lambda; dn<sub>eff</sub>/d&lambda;: the index that sets pulse delay, filter free spectral ranges and resonance shifts. A silicon wire's own dispersion is strong: n<sub>g</sub> &asymp; 4.0 against n<sub>eff</sub> &asymp; 2.5 for 500 &times; 220 nm.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-05">OptSiP 01 &middot; loss, bends and group index</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-04">OptSiP 01 &middot; interactive mode solver</a></span></dd>
+        <dt id="g-loss">Propagation and bend loss</dt>
+        <dd>Sidewall roughness scatters light from strip waveguides: 3.6 dB/cm reported for a single-mode strip, 0.27 dB/cm for a shallow ridge. Bends radiate; at a 2 &micro;m radius a silicon strip loses about 0.013 dB per 90&deg;.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-05">OptSiP 01 &middot; loss, bends and group index</a></span></dd>
+        <dt id="g-mfd">Mode-field diameter and mode mismatch</dt>
+        <dd>The width of a fibre's guided mode: 10.4 &micro;m at 1550 nm and 9.2 &micro;m at 1310 nm for SMF-28 Ultra. A silicon wire's mode is about half a micrometre, so butting one onto the other loses about 20 dB without a coupler.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-06">OptSiP 01 &middot; getting light on and off the chip</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-04">OptSiP 01 &middot; interactive mode solver</a></span></dd>
+        <dt id="g-grating">Grating coupler</dt>
+        <dd>A grating etched into the waveguide that diffracts light up to a fibre held above the wafer. It allows wafer-level testing and placement anywhere on the die, but is narrowband and polarisation-dependent; the best research result is &minus;0.58 dB with a bottom mirror.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-06">OptSiP 01 &middot; getting light on and off the chip</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-06">OptSiP 03 &middot; fibre attach and packaging</a></span></dd>
+        <dt id="g-edge">Edge coupler (inverse taper)</dt>
+        <dd>A silicon taper narrowed until the mode spreads into a larger cladding guide that matches a fibre at the polished chip facet. Broadband and low-loss (0.36&ndash;0.66 dB per connection reported) but needs facet preparation and edge access.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-06">OptSiP 01 &middot; getting light on and off the chip</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-06">OptSiP 03 &middot; fibre attach and packaging</a></span></dd>
+        <dt id="g-coupler">Directional couplers, MMIs and Y-branches</dt>
+        <dd>Passive splitters. A directional coupler transfers sin<sup>2</sup>(&kappa;L) of the power across a narrow gap and is sensitive to gap and wavelength; a multimode interference (MMI) coupler splits by self-imaging and is more tolerant; a Y-branch splits adiabatically.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-07">OptSiP 01 &middot; splitters and directional couplers</a></span></dd>
+        <dt id="g-mzi">Mach&ndash;Zehnder interferometer (MZI)</dt>
+        <dd>Split, two arms, recombine: the bar port carries cos<sup>2</sup>(&Delta;&phi;/2). With unequal arms it is a periodic filter with FSR = &lambda;<sup>2</sup>/(n<sub>g</sub>&Delta;L); with a phase shifter in one arm, a switch or modulator.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-08">OptSiP 01 &middot; the MZI as a filter</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-04">OptSiP 02 &middot; the Mach&ndash;Zehnder modulator</a></span></dd>
+        <dt id="g-ring">Ring resonator</dt>
+        <dd>A closed loop beside a bus waveguide that resonates when its round trip holds a whole number of wavelengths. All-pass rings notch the bus; add-drop rings route a wavelength to a second bus. Compact filters, modulators and WDM elements.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-09">OptSiP 01 &middot; ring resonators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-06">OptSiP 02 &middot; ring modulators</a></span></dd>
+        <dt id="g-fsr">Free spectral range (FSR)</dt>
+        <dd>The wavelength spacing between successive resonances or transmission peaks: &lambda;<sup>2</sup>/(n<sub>g</sub>L) for a ring of circumference L. About 9.5 nm for a 10 &micro;m-radius silicon ring at 1550 nm.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-09">OptSiP 01 &middot; ring resonators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-08">OptSiP 01 &middot; the MZI as a filter</a></span></dd>
+        <dt id="g-q">Q factor, linewidth and finesse</dt>
+        <dd>Q = &lambda;/&Delta;&lambda;<sub>FWHM</sub>, set by round-trip loss and bus coupling; a loaded Q of 10,000 at 1550 nm is a 0.155 nm linewidth. Finesse = FSR/&Delta;&lambda;<sub>FWHM</sub>. Higher Q sharpens a filter or modulator but narrows its optical bandwidth and its tolerance to drift.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-09">OptSiP 01 &middot; ring resonators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-06">OptSiP 02 &middot; ring modulators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-07">OptSiP 02 &middot; interactive ring and MZ modulators</a></span></dd>
+        <dt id="g-thermo">Thermo-optic effect</dt>
+        <dd>Silicon's index rises by 1.8&times;10<sup>&minus;4</sup> per kelvin at room temperature, moving a silicon-wire resonance by about 72 pm/K at 1550 nm: about 2 K detunes a Q = 10,000 ring by a full linewidth. It makes heaters effective phase shifters and makes rings need tuning.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-10">OptSiP 01 &middot; temperature and fabrication sensitivity</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-08">OptSiP 02 &middot; keeping a ring on resonance</a></span></dd>
+        <dt id="g-fabvar">Fabrication variation</dt>
+        <dd>Nanometre changes in waveguide width and silicon thickness shift resonances: about 0.5 nm per nm of width and 1.3 nm per nm of thickness for a 500 &times; 220 nm strip (semi-vectorial estimate). Rings and filters are tuned after fabrication.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-10">OptSiP 01 &middot; temperature and fabrication sensitivity</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-04">OptSiP 01 &middot; interactive mode solver</a></span></dd>
+    </dl>
+    <h3>Wavelength multiplexing</h3>
+    <dl class="gloss">
+        <dt id="g-wdm">Wavelength-division multiplexing (WDM)</dt>
+        <dd>Several channels on one fibre, each on its own wavelength, combined by a multiplexer and separated by a demultiplexer. It multiplies bandwidth per fibre without faster electronics.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-11">OptSiP 01 &middot; WDM grids</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-12">OptSiP 01 &middot; multiplexers</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-12">OptSiP 03 &middot; how bandwidth scales</a></span></dd>
+        <dt id="g-grids">CWDM, LAN-WDM and DWDM grids</dt>
+        <dd>Standard channel plans. CWDM: 20 nm spacing, 18 wavelengths 1271&ndash;1611 nm (ITU-T G.694.2; CWDM4 uses 1271&ndash;1331 nm). LAN-WDM: 800 GHz near 1300 nm (100GBASE-LR4). DWDM: anchored at 193.1 THz with 12.5&ndash;100 GHz spacing (ITU-T G.694.1).<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-11">OptSiP 01 &middot; WDM grids</a></span></dd>
+        <dt id="g-awg">Arrayed waveguide grating (AWG) and echelle grating</dt>
+        <dd>Integrated demultiplexers. An AWG's stepped-length arms tilt the phase front by wavelength and a slab focuses each wavelength to its own port, an integrated Fourier optic; an echelle uses a reflective grating in a slab. AWGs suit dense spacing, echelles coarse.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_01_Waveguides_and_WDM/#slide-12">OptSiP 01 &middot; multiplexers</a></span></dd>
+    </dl>
+    <h3>Modulators</h3>
+    <dl class="gloss">
+        <dt id="g-pam4">NRZ and PAM4</dt>
+        <dd>Intensity-modulation formats. NRZ (on&ndash;off keying) sends one bit per symbol on two levels; PAM4 sends two bits on four levels, halving the symbol rate for a given bit rate at the cost of eyes a third the height. 400GBASE-DR4 uses PAM4 at 53.125 GBd per lane.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-01">OptSiP 02 &middot; what a modulator has to do</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-12">OptSiP 02 &middot; from photocurrent to bits</a></span></dd>
+        <dt id="g-er">Extinction ratio and OMA</dt>
+        <dd>Extinction ratio: the power ratio between the high and low levels. Optical modulation amplitude (OMA): their difference, the quantity a receiver's decision actually uses. A modulator trades insertion loss against extinction ratio by where it is biased.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-01">OptSiP 02 &middot; what a modulator has to do</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-07">OptSiP 02 &middot; interactive ring and MZ modulators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-08">OptSiP 03 &middot; the optical link budget</a></span></dd>
+        <dt id="g-tdecq">TDECQ</dt>
+        <dd>Transmitter and dispersion eye closure for PAM4: the IEEE 802.3 metric of how much optical power penalty a transmitter's eye costs a reference receiver with a reference equaliser. Defined in IEEE 802.3bs for 400GBASE PAM4 optics.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-01">OptSiP 02 &middot; what a modulator has to do</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-06">OptSiP 02 &middot; ring modulators</a></span></dd>
+        <dt id="g-plasma">Plasma-dispersion effect</dt>
+        <dd>Free electrons and holes lower silicon's refractive index and add absorption (Soref and Bennett): at 1550 nm, &Delta;n = &minus;(8.8&times;10<sup>&minus;22</sup>&Delta;N<sub>e</sub> + 8.5&times;10<sup>&minus;18</sup>&Delta;N<sub>h</sub><sup>0.8</sup>). Silicon has no linear electro-optic effect, so this is how most silicon modulators work.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-02">OptSiP 02 &middot; the plasma-dispersion effect</a></span></dd>
+        <dt id="g-phaseshifter">Depletion, injection and MOS-capacitor phase shifters</dt>
+        <dd>Three ways to move carriers in a silicon waveguide. Reverse-biased pn depletion is fast but weak (V&pi;L about 2 V&middot;cm); forward-biased injection is strong but slow; a MOS capacitor (accumulation) is strong with a high capacitance.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-03">OptSiP 02 &middot; depletion, injection and MOS capacitors</a></span></dd>
+        <dt id="g-mzm">Mach&ndash;Zehnder modulator (MZM)</dt>
+        <dd>An MZI with high-speed phase shifters in its arms, driven push&ndash;pull and biased at quadrature. Broadband and temperature-tolerant, but millimetres long, so it needs travelling-wave electrodes and a driver that can swing volts.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-04">OptSiP 02 &middot; the Mach&ndash;Zehnder modulator</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-07">OptSiP 02 &middot; interactive ring and MZ modulators</a></span></dd>
+        <dt id="g-vpil">V&pi;L</dt>
+        <dd>The voltage-length product needed for a &pi; phase shift: the efficiency figure of a phase shifter. About 2 V&middot;cm for silicon carrier depletion; 0.52 V&middot;cm reported for an optimised design. Lower V&pi;L means a shorter device or a smaller drive.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-04">OptSiP 02 &middot; the Mach&ndash;Zehnder modulator</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-03">OptSiP 02 &middot; depletion, injection and MOS capacitors</a></span></dd>
+        <dt id="g-twe">Travelling-wave electrode</dt>
+        <dd>A transmission line along a long modulator, so the electrical signal travels with the light. Bandwidth is limited by RF loss and by velocity and impedance mismatch; the line is terminated, so the driver's power is burnt in the termination whatever the data.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-05">OptSiP 02 &middot; travelling-wave electrodes and driver energy</a></span></dd>
+        <dt id="g-cv2">Capacitive energy per bit (&frac14;CV&sup2;)</dt>
+        <dd>A lumped capacitive modulator driven by random NRZ data draws CV<sup>2</sup> from the supply on a 0&rarr;1 transition, one bit in four on average, so it dissipates about &frac14;CV<sup>2</sup> per bit (Miller). A 10 fF ring at 1 V: 2.5 fJ/bit, before the driver.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-05">OptSiP 02 &middot; travelling-wave electrodes and driver energy</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-07">OptSiP 02 &middot; interactive ring and MZ modulators</a></span></dd>
+        <dt id="g-ringmod">Ring modulator</dt>
+        <dd>A ring whose resonance is shifted by a pn junction: a small shift moves a sharp notch on or off the laser line. Micrometres across, femtofarads of capacitance and femtojoules per bit, but narrowband, temperature-sensitive and limited by photon lifetime at high Q.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-06">OptSiP 02 &middot; ring modulators</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-07">OptSiP 02 &middot; interactive ring and MZ modulators</a></span></dd>
+        <dt id="g-tuning">Thermal tuning and wavelength locking</dt>
+        <dd>Heaters next to rings and interferometers to correct fabrication offsets and follow temperature, held by a control loop that monitors a photodiode. Reported heater efficiencies are of order 12&ndash;25 mW per &pi; phase shift; across many rings this static power is a large share of a link's energy.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-08">OptSiP 02 &middot; keeping a ring on resonance</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-11">OptSiP 03 &middot; thermal tuning in the budget</a></span></dd>
+        <dt id="g-eam">Electro-absorption modulator (GeSi EAM)</dt>
+        <dd>A modulator that changes absorption rather than index: germanium or GeSi near its band edge, under an electric field (Franz&ndash;Keldysh effect). Short and low in capacitance, but its wavelength window is fixed by the material.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-09">OptSiP 02 &middot; beyond plasma dispersion</a></span></dd>
+        <dt id="g-tfln">Thin-film lithium niobate (and other added materials)</dt>
+        <dd>Materials with a linear (Pockels) electro-optic effect, which silicon lacks, bonded or deposited onto a photonic chip: thin-film lithium niobate, barium titanate, polymers, plasmonics. They lower drive voltage or loss, at the price of new process steps.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-09">OptSiP 02 &middot; beyond plasma dispersion</a></span></dd>
+    </dl>
+    <h3>Detection</h3>
+    <dl class="gloss">
+        <dt id="g-gepd">Germanium photodiode</dt>
+        <dd>Germanium grown on silicon absorbs at 1310 and 1550 nm, where silicon is transparent, and makes the detector of a silicon photonic chip. Waveguide-coupled Ge diodes reach tens of GHz with responsivities near 0.8 A/W.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-10">OptSiP 02 &middot; germanium photodiodes</a></span></dd>
+        <dt id="g-responsivity">Responsivity and quantum efficiency</dt>
+        <dd>Photocurrent per watt of light, R = &eta;q&lambda;/(hc): at most 1.25 A/W at 1550 nm and 1.06 A/W at 1310 nm for 100% quantum efficiency &eta;.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-10">OptSiP 02 &middot; germanium photodiodes</a></span></dd>
+        <dt id="g-dark">Dark current, capacitance and bandwidth</dt>
+        <dd>A photodiode's limits: current with no light (noise), capacitance (which with the load sets an RC bandwidth) and carrier transit time across the absorber. Small waveguide detectors cut capacitance and transit time together.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-11">OptSiP 02 &middot; bandwidth, dark current and avalanche gain</a></span></dd>
+        <dt id="g-apd">Avalanche photodiode (APD)</dt>
+        <dd>A photodiode with internal gain from impact ionisation, which improves sensitivity when the amplifier's noise dominates. Ge/Si APDs separate germanium absorption from silicon multiplication: 340 GHz gain&ndash;bandwidth product reported.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-11">OptSiP 02 &middot; bandwidth, dark current and avalanche gain</a></span></dd>
+        <dt id="g-tia">Transimpedance amplifier and receiver sensitivity</dt>
+        <dd>The TIA turns photocurrent into a voltage; its input noise and the detector's capacitance set the sensitivity: the smallest optical power (or OMA) that meets the target bit error ratio. The sensitivity is where a link budget ends.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-12">OptSiP 02 &middot; from photocurrent to bits</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-08">OptSiP 03 &middot; the optical link budget</a></span></dd>
+        <dt id="g-coherent">Direct and coherent detection</dt>
+        <dd>Direct (intensity) detection measures |E|<sup>2</sup> and suits short reaches; coherent detection mixes the signal with a local laser to recover amplitude and phase, carrying more bits per symbol at the cost of a second laser and DSP.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_02_Modulators_and_Detectors/#slide-13">OptSiP 02 &middot; direct and coherent detection</a></span></dd>
+    </dl>
+    <h3>Lasers, packaging and energy</h3>
+    <dl class="gloss">
+        <dt id="g-indirect">Indirect bandgap</dt>
+        <dd>In silicon the lowest conduction-band state and the highest valence-band state are at different crystal momenta, so an electron and hole can only recombine radiatively with a phonon's help. Radiative recombination is slow and efficient lasing is out of reach; III&ndash;V materials have direct gaps.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-01">OptSiP 03 &middot; why silicon needs someone else's laser</a></span></dd>
+        <dt id="g-laserint">Laser integration options</dt>
+        <dd>Four ways to bring the laser: an external source fibred in; a packaged laser chip flip-chipped or attached; III&ndash;V bonded onto silicon and processed (heterogeneous); or III&ndash;V grown directly on silicon (monolithic). They trade coupling loss, thermal path, replaceability and process maturity.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-02">OptSiP 03 &middot; four ways to bring the laser</a></span></dd>
+        <dt id="g-elsfp">External laser source and ELSFP</dt>
+        <dd>Keeping the laser off the hot photonic die, in a front-panel module that feeds light by fibre: replaceable, cooler, and shared across many channels. OIF's External Laser Small Form Factor Pluggable (ELSFP) implementation agreement standardises such a module for co-packaged optics.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-03">OptSiP 03 &middot; external lasers and the ELSFP</a></span></dd>
+        <dt id="g-wpe">Wall-plug efficiency</dt>
+        <dd>Optical power out divided by electrical power in. A III&ndash;V-on-silicon research DFB laser measured up to 13%; a comb-driven link analysis assumes 35% for its pump laser and 14.35% overall; vendors claim higher for high-power sources. Every dB of optical loss in a link is paid at the wall divided by this number.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-04">OptSiP 03 &middot; wall-plug efficiency</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-09">OptSiP 03 &middot; interactive link budget</a></span></dd>
+        <dt id="g-comb">Multi-wavelength sources and combs</dt>
+        <dd>One source for many WDM channels: a laser array, a mode-locked quantum-dot comb laser, or a Kerr microcomb. They save lasers but split power between lines, so per-line power and line-to-line flatness enter the budget.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-05">OptSiP 03 &middot; multi-wavelength sources</a></span></dd>
+        <dt id="g-packaging">Fibre attach and photonic packaging</dt>
+        <dd>Aligning fibres to couplers to a fraction of a micrometre and keeping them there: active alignment, V-groove fibre arrays, and the thermal and mechanical design around them. Packaging is far more expensive than electronic packaging and is often called the bottleneck.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-06">OptSiP 03 &middot; fibre attach and packaging</a></span></dd>
+        <dt id="g-eic">Electronic&ndash;photonic integration</dt>
+        <dd>Where the drivers and receivers sit: on the same die (monolithic, in a CMOS SOI process), on a separate electronic chip bonded face-to-face (3-D), or beside it on a substrate. Shorter connections cut parasitic capacitance and so energy per bit.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-07">OptSiP 03 &middot; putting electronics next to photonics</a></span></dd>
+        <dt id="g-linkbudget">Optical link budget</dt>
+        <dd>The bookkeeping from laser to detector: laser power minus coupling, modulator, multiplexer, fibre and connector losses and penalties must exceed the receiver's sensitivity plus a margin. The required laser power follows from the losses, and the electrical power from the wall-plug efficiency.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-08">OptSiP 03 &middot; the optical link budget</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-09">OptSiP 03 &middot; interactive link budget</a></span></dd>
+        <dt id="g-pjbit">Energy per bit</dt>
+        <dd>Total link power divided by data rate, in pJ/bit or fJ/bit: laser (via wall-plug efficiency), modulator driver, receiver, serialisers and clocking, thermal tuning, and any DSP. Published silicon links span from about 120 fJ/bit to a few pJ/bit; what is included matters as much as the number.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-10">OptSiP 03 &middot; what published links report</a> &middot; <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-09">OptSiP 03 &middot; interactive link budget</a></span></dd>
+        <dt id="g-scaling">Bandwidth scaling: lanes, wavelengths and symbol rate</dt>
+        <dd>A link's bandwidth is fibres &times; wavelengths per fibre &times; bits per symbol &times; symbol rate. Each axis costs something different: fibres cost packaging, wavelengths cost lasers and filters, bits per symbol cost sensitivity, and baud costs electronics.<span class="where">Explained in: <a href="https://brendanjameslynskey.github.io/OptSiP_03_Lasers_and_Energy_per_Bit/#slide-12">OptSiP 03 &middot; how bandwidth scales</a></span></dd>
+    </dl>
+    <h3>Explained in the sister series</h3>
+    <p class="gloss-intro"><a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-lens">The lens as a Fourier transformer</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-mzimesh">Mach–Zehnder interferometer (MZI) meshes</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-onchipfft">Integrated optical Fourier transforms</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-coherence">Coherent and incoherent light</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-phaseproblem">Square-law detection and the phase problem</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/#g-photoniclink">Photonic interconnect</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-module">Photonic link module</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/#g-pjbit">Link energy per bit</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-photonicpower">Power in photonic compute</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Inference_Simulators/#g-staticdyn">Static and dynamic power</a> &middot; <a href="https://brendanjameslynskey.github.io/FHE_Hub_Accelerator_Simulators/#g-walden">Walden figure of merit</a>.</p>
+</main>
+
+<footer class="footer">
+    <p>Part of the <a href="https://brendanjameslynskey.github.io/Hardware/">Hardware index</a>, under <em>Optical Technology</em>.</p>
+    <p style="margin-top: 0.5rem;">Sister series: <a href="https://github.com/BrendanJamesLynskey/Optical_Hub_Data_Centres">Optical Technology for Data Centres</a> (planned) &middot; <a href="https://github.com/BrendanJamesLynskey/Optical_Hub_AI_Processing">Optical Technology for AI Processing</a> (planned) &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Inference/">Fourier Optics for Inference</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Fourier_Optics_Training/">Fourier Optics for Training</a> &middot; <a href="https://brendanjameslynskey.github.io/LLM_Hub_Compute_in_Transit/">Compute in Transit</a>.</p>
+</footer>
+
+</body>
+</html>
