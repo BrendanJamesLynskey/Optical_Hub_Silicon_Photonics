@@ -1,3 +1,7 @@
+<!-- portfolio-strip:start (brief 40) -->
+<sub>**Brendan Lynskey** · [Portfolio home](https://brendanjameslynskey.github.io/) · [Interactive sites](https://brendanjameslynskey.github.io/#sites)</sub>
+<!-- portfolio-strip:end -->
+
 # Silicon Photonics Fundamentals
 
 The device physics under every optical link and photonic accelerator: how silicon guides, splits and filters light; how modulators and germanium photodiodes put data on it and take it off; and where the laser, the package and the picojoules per bit come from. A foundation series: the [Optical Technology for Data Centres](https://github.com/BrendanJamesLynskey/Optical_Hub_Data_Centres) and [Optical Technology for AI Processing](https://github.com/BrendanJamesLynskey/Optical_Hub_AI_Processing) series link this glossary instead of re-explaining devices.
